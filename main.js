@@ -12,6 +12,7 @@ let holeyHole = 0;
 let arr = []
 let arr2 = []
 let position = 0;
+let fieldStr;
 
 
 function buildField() {
@@ -32,7 +33,27 @@ function buildField() {
     let hatNum = Math.floor(Math.random() * arr.length)
     arr[hatNum] = hat;    
     
-    console.log(arr.join(''));
+fieldStr = arr.join('');
+console.log(fieldStr);
+let myArr = fieldStr.split('');
+
+function fieldMatrix(list, elePerArr) {
+    let matrix = [], i, k;
+
+    for (i = 0, k = -1; i < list.length; i++) {
+        if (i % elePerArr === 0) {
+            k++;
+            matrix[k] = [];
+        }
+
+        matrix[k].push(list[i]);
+    }
+
+    console.log(matrix);
+}
+
+fieldMatrix(myArr, width);
+
 
     //creates first array and starting position    
     while (arr2.length < 10) {
@@ -50,18 +71,6 @@ function changePosition() {
     console.log(arr2.join(''));
 }
 
-function playGame() {
-    let choice = prompt('What direction do you want to go?')
-    if (choice === 'd') {
-        position = position + 1;
-    } else if (choice === 'a') {
-        position--;
-    } else {
-
-    }
-    console.log(arr2.join(''));
-}
-
 
 class Field {
     constructor(field) {
@@ -75,7 +84,15 @@ class Field {
     }
 };
 
+let y = 0;
+let x = 0;
+
+
+
+
 buildField();
-playGame();
+
+
+
 
 
