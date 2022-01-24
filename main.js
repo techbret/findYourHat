@@ -4,95 +4,88 @@ const hat = '^';
 const hole = 'O';
 const fieldCharacter = '░';
 const pathCharacter = '*';
-const width = prompt('How wide do you want your field?')
-const height = prompt('How tall do you want your field?')
-let percentageOfHoles = Math.ceil(height * width * 0.19)
-console.log(percentageOfHoles);
-let holeyHole = 0;
-let arr = []
-let arr2 = []
-let position = 0;
-let fieldStr;
-
-
-function buildField() {
-
-    //Creates field array with just 'fieldCharacter'
-    while (arr.length < width * height) {
-        arr.push(fieldCharacter)
-    }
-    
-    //Adds 'holes' to the field at a rate of 19%
-    while (percentageOfHoles >= 0) {
-        holeyHole = Math.floor(Math.random() * width * height)
-        arr[holeyHole] = hole;
-        percentageOfHoles = percentageOfHoles - 1;
-    }
-    
-    //Adds the 'hat' to the field
-    let hatNum = Math.floor(Math.random() * arr.length)
-    arr[hatNum] = hat;    
-    
-fieldStr = arr.join('');
-console.log(fieldStr);
-let myArr = fieldStr.split('');
-
-function fieldMatrix(list, elePerArr) {
-    let matrix = [], i, k;
-
-    for (i = 0, k = -1; i < list.length; i++) {
-        if (i % elePerArr === 0) {
-            k++;
-            matrix[k] = [];
-        }
-
-        matrix[k].push(list[i]);
-    }
-
-    console.log(matrix);
-}
-
-fieldMatrix(myArr, width);
-
-
-    //creates first array and starting position    
-    while (arr2.length < 10) {
-        arr2.push(arr[0])
-        arr.shift();
-        arr2[position] = pathCharacter;
-    }
-    console.log(arr2.join(''));
-    
-
-}
-
-function changePosition() {
-    arr2[position] = pathCharacter;
-    console.log(arr2.join(''));
-}
-
 
 class Field {
     constructor(field) {
         this._field = field;
-
-
     }
     
     get field() {
         return this.field
     }
+
+    static buildField(width, height, percentageOfHoles) {
+        let holePlacement = Math.floor(Math.random() * width * height);
+        let emptyField = []
+        let hatNum;
+        let fullFieldStr;
+        let fullFieldArr = [];
+
+        //creates field arrat with just 'fieldcharacters'
+        while (emptyField.length < width * height) {
+            emptyField.push(fieldCharacter)
+        }
+
+        //adds the 'holes' to the field at a rate of 20%
+        while (percentageOfHoles >= 0) {
+            holePlacement = Math.floor(Math.random() * width * height);
+            emptyField[holePlacement] = hole;
+            percentageOfHoles = percentageOfHoles - 1;
+        }
+
+        //adds the 'hat' to the field at a random location
+        hatNum = Math.floor(Math.random() * emptyField.length)
+        emptyField[hatNum] = hat;
+
+        //turns the field into a string then into an array;
+        fullFieldStr = emptyField.join('');
+        fullFieldArr = fullFieldStr.split('');
+
+        let matrix = [], i, k;
+        for (i = 0, k = -1; i < fullFieldArr.length; i++) {
+            if (i % width === 0) {
+                k++;
+                matrix[k] =  [];
+            }
+            matrix[k].push(fullFieldArr[i]);
+        }
+
+        return matrix;
+        
+    };
+
+    printField() {
+        return this._field.map(row => row.join('')).join('\n');
+    }
+
+    letsPlay() {
+        let currentlyPlaying = true;
+        let x = 5;
+        let y = 0;
+        this._field[y][x] = pathCharacter;
+        console.log(this.printField());
+        while (currentlyPlaying) {
+            let selection = prompt('Which direction would you like to go? Using letters a w d s to move')
+            if (selection === 'd') {
+                this._field[0][0] = fieldCharacter;
+                y++
+            } else {
+                return 'error'
+            }
+            console.log(this.printField());
+        }
+    }
+
 };
 
-let y = 0;
-let x = 0;
+//Initiates the game
+const userWidth = prompt('How wide do you want your field?');
+const userHeight = prompt('How tall do you want your field?');
+let normalPercentageOfHoles = Math.ceil(userHeight * userWidth * 0.2);
 
+const newFieldstr = Field.buildField(Number(userWidth), Number(userHeight), Number(normalPercentageOfHoles));
+const gameField = new Field(newFieldstr);
 
-
-
-buildField();
-
-
-
+gameField.letsPlay();
 
 
