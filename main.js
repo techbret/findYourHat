@@ -54,10 +54,12 @@ class Field {
         
     };
 
+    //joins the matrix together by mapping each array as a row
     printField() {
         return this._field.map(row => row.join('')).join('\n');
     }
 
+    //initiates the game and keeps it in a loop until the game is won or lost
     letsPlay() {
         let currentlyPlaying = true;
         let x = 0;
