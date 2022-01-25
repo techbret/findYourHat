@@ -60,17 +60,59 @@ class Field {
 
     letsPlay() {
         let currentlyPlaying = true;
-        let x = 5;
+        let x = 0;
         let y = 0;
-        this._field[y][x] = pathCharacter;
-        console.log(this.printField());
+        let selection;
+        this._field[0][0] = pathCharacter;
+        console.log(this.printField());        
         while (currentlyPlaying) {
-            let selection = prompt('Which direction would you like to go? Using letters a w d s to move')
-            if (selection === 'd') {
-                this._field[0][0] = fieldCharacter;
-                y++
+            this._field[y][x] = pathCharacter;
+            selection = prompt('Which direction would you like to go? Using letters a w d s to move');
+            if (x === (Number(userWidth - 1)) && selection === 'd') {
+                console.log('You are too far right')
+                break;
+            } else if (x === 0 && selection === 'a') {
+                console.log('You are too far left');
+                currentlyPlaying = false;
+                break;
+            } else if (y === 0 && selection === 'w') {
+                console.log('You are too high');
+                currentlyPlaying = false;
+                break;
+            } else if (y === (Number(userHeight - 1)) && selection === 's') {
+                console.log('You are too low');
+                currentlyPlaying = false;
+                break;
+            } else if (this._field[y][x] === hole) {
+                console.log('You have found the hat!');
+                currentlyPlaying = false;
+                break;                
+            } else if (selection === 'd' && x < userWidth - 1) {
+                this._field[y][x] = fieldCharacter;
+                x++;              
+            } else if (selection === 'a' && x >= 0) {
+                this._field[y][x] = fieldCharacter;
+                x--;
+            } else if (selection === 'w' && y >= 0) {
+                this._field[y][x] = fieldCharacter;
+                y--;
+            } else if (selection === 's' && y < userHeight - 1) {
+                this._field[y][x] = fieldCharacter;
+                y++;
             } else {
-                return 'error'
+                console.log('error');
+                break;
+            }
+            if (this._field[y][x] === hat) {
+                console.log('You have found the hat!');
+                currentlyPlaying = false;
+                break;
+            } else if (this._field[y][x] === hole) {
+                console.log('Oops! You fell in a hole!');
+                currentlyPlaying = false;
+                break;
+            } else {
+                this._field[y][x] = pathCharacter;  
             }
             console.log(this.printField());
         }
